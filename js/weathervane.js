@@ -1,53 +1,71 @@
-function addForecast() {
-	var lat = $("#lat").val();
-	var lon = $("#lon").val();
-	
-	$.ajax({
-		type: "GET",
-		url: "http://forecast.weather.gov/MapClick.php",
-		data: {lat: lat, lon: lon, FcstType: "json"},
-		success: makeFcst
-	});
+function onAddSubmit(event) {
+  let lat = $('#lat').val();
+  let lon = $('#lon').val();
+
+  $.ajax({
+    type: 'GET',
+    url: 'http://forecast.weather.gov/MapClick.php',
+    data: { lat, lon, FcstType: 'json' },
+    success: createFcst,
+  });
+
+  event.preventDefault();
 }
 
-function makeFcst(fcst) {
-	var f = parseFcst(fcst);
-	
-	$("#container").append("<div class='forecast' id='cur-fcst'></div>");
-	$("#cur-fcst").append("<input type='button' class='remove-btn' "
-						+ "id='cur-btn' onClick='removeForecast(this)'/>");
-	$("#cur-fcst").append("<h2>" + f.area + "</h2>");
-	$("#cur-fcst").append("<div class='fcst-content' id='cur-content'></div>");
-	$("#cur-content").append("<div class='name'>" + f.name + "</div>");
-	$("#cur-content").append("<div>" + f.date + "</div>");
-	$("#cur-content").append("<div>" + f.temp + " degrees</div>");
-	$("#cur-content").append("<div>" + f.weather + "</div>");
-	$("#cur-content").append(
-	"<img src='http://forecast.weather.gov/newimages/medium/" + f.img + "'>");
-	$("#cur-fcst").removeAttr("id");
-	$("#cur-btn").removeAttr("id");
-	$("#cur-content").removeAttr("id");
-}
+function createFcst(fcst) {
+  fcst = parseFcst(fcst);
 
-function removeForecast(btn) {
-	var fcst = btn.parentNode;
-	fcst.parentNode.removeChild(fcst);
+  $('#body').append("<div class='card' id='currentCard'></div>");
+  if (fcst.image) {
+    $('#currentCard').append(
+      '<img src="http://forecast.weather.gov/newimages/medium/' +
+        fcst.image +
+        '" class="card-img-top">',
+    );
+  }
+  $('#currentCard').append(
+    '<div class="card-body" id="currentCardBody"></div>',
+  );
+  $('#currentCardBody').append('<h5 class="card-title">' + fcst.name + '</h5>');
+  $('#currentCardBody').append(
+    "<div class='card-subtitle mb-2 text-muted'>" + fcst.area + '</div>',
+  );
+
+  var cardText = fcst.temp + ' degrees';
+  if (fcst.weather) {
+    cardText += ' and ' + fcst.weather;
+  }
+  $('#currentCardBody').append('<p class="card-text">' + cardText + '</p>');
+  $('#currentCard').append(
+    '<div class="card-footer"><small class="text-muted">' +
+      fcst.date +
+      '</small></div>',
+  );
+
+  $('#currentCard').removeAttr('id');
+  $('#currentCardBody').removeAttr('id');
 }
 
 function parseFcst(fcst) {
-	var area = fcst.location.areaDescription;
-	var name = fcst.currentobservation.name;
-	var date = fcst.currentobservation.Date;
-	var temp = fcst.currentobservation.Temp;
-	var weather = fcst.currentobservation.Weather;
-	var img = fcst.currentobservation.Weatherimage;
-	
-	return {
-		area: area, 
-		name: name, 
-		date: date, 
-		temp: temp, 
-		weather: weather, 
-		img: img
-	};
+  let area = fcst.location.areaDescription;
+  let name = fcst.currentobservation.name;
+  let date = fcst.currentobservation.Date;
+  let temp = fcst.currentobservation.Temp;
+  let weather =
+    fcst.currentobservation.Weather !== 'NA'
+      ? fcst.currentobservation.Weather
+      : null;
+  let image =
+    fcst.currentobservation.Weatherimage !== 'NULL'
+      ? fcst.currentobservation.Weatherimage
+      : null;
+
+  return {
+    area,
+    name,
+    date,
+    temp,
+    weather,
+    image,
+  };
 }

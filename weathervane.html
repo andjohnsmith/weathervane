@@ -2,41 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>Weathervane</title>
-    <link href="css/weathervane.css" rel="stylesheet" />
-    <style>
-      img.logo {
-      position : absolute;
-      top : 9px;
-      left: 5px;
-      width : 80px;
-      filter : drop-shadow(2px 2px 2px #333);
-      }
-    </style>
-    <script
-       src="https://code.jquery.com/jquery-3.1.1.js"
-       integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-       crossorigin="anonymous"></script>
-    <script src="js/weathervane.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <img src="assets/weathervane.png" class="logo">
-    <div style="padding-left: 100px;" id="header" class="header">
-      Weathervane
-      <span class="profile">jdoe@uwlax.edu</span>
-    </div>
-
-    <div id="topbar">
-      <input type="text" placeholder="latitude" id="lat" class="input" style="margin-left:100px"/>
-      <input type="text" placeholder="longitude" id="lon" class="input"/>
-      <input type="button" id="addButton" value="Add Location" onclick="addForecast();" />
-    </div>
-    
-    <div id="container">
-    </div>
-    
-    <div class="footer" id="footer">
-      &copy; The Weathervane Team
-    </div>
+    <nav class="navbar navbar-light bg-light">
+      <span class="navbar-brand mb-0 h1">Weathervane</span>
+      <form class="form-inline" onSubmit="onAddSubmit(event)">
+        <input
+          class="form-control mr-sm-2"
+          id="lat"
+          type="text"
+          placeholder="Latitude"
+          aria-label="Latitude"
+        />
+        <input
+          class="form-control mr-sm-2"
+          id="lon"
+          type="text"
+          placeholder="Longitude"
+          aria-label="Longitude"
+        />
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          Add
+        </button>
+      </form>
+    </nav>
+    <div class="card-columns" id="body" style="margin: .75rem;"></div>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/weathervane.js"></script>
   </body>
 </html>
